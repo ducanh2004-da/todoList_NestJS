@@ -1,0 +1,28 @@
+mutation {
+  addTask(data: {
+    title: "làm bài tập",
+    dueAt: "2025-08-27T09:30:00.000Z",
+    description: "Theo dõi đơn hàng #123",
+    status: IN_PROGRESS
+  }) {
+    id
+    title
+    description
+    dueAt
+    status
+  }
+}
+
+query {
+  tasks {
+    totalTask
+    totalPage
+    items {
+      id
+    title
+    description
+    dueAt
+    status
+    }
+  }
+}
