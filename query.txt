@@ -1,33 +1,42 @@
-
-
 query {
   tasks {
     totalTask
     totalPage
     items {
       id
-    title
-    description
-    dueAt
-    status
+      title
+      description
+      dueAt
+      status
+      tags {
+        id
+        title
+        description
+      }
     }
   }
 }
 
+
 mutation {
   addTask(data: {
-    title: "làm bài tập",
+    title: "làm bài tập3",
     dueAt: "2025-08-27T09:30:00.000Z",
     description: "Theo dõi đơn hàng #123",
-    status: IN_PROGRESS
+    status: IN_PROGRESS,
+    tags: ["học bài"]
   }) {
     id
     title
     description
     dueAt
     status
+    tags {
+      title
+    }
   }
 }
+
 
 mutation {
   editTask(

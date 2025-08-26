@@ -13,6 +13,6 @@ export class TagResponse {
     @Field({ nullable: true })
     description?: string;
 
-    @Field({ nullable: true })
+    @Field(() => Number, { nullable: true })
     taskId?: number;
 }

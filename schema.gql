@@ -2,12 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type TagResponse {
+  id: String!
+  title: String!
+  description: String
+  taskId: Float
+}
+
 type TaskResponse {
   id: ID!
   title: String!
   description: String
   dueAt: DateTime
   status: String
+  tags: [TagResponse]
 }
 
 """
@@ -19,13 +27,6 @@ type TaskPagination {
   totalTask: Int!
   totalPage: Int!
   items: [TaskResponse!]
-}
-
-type TagResponse {
-  id: String!
-  title: String!
-  description: String
-  taskId: Float
 }
 
 type Query {
@@ -48,6 +49,7 @@ input CreateTaskInput {
   dueAt: DateTime!
   description: String
   status: TaskStatus
+  tags: [String]
 }
 
 """Status của Task"""

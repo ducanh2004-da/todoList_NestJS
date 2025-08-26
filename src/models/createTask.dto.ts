@@ -1,6 +1,6 @@
 // src/auth/dto/create-user.input.ts
 import { InputType, Field, GraphQLISODateTime, registerEnumType } from '@nestjs/graphql';
-import { IsEmail, IsString, MinLength, IsOptional, IsDateString, IsEnum } from 'class-validator';
+import { IsEmail, IsArray, IsString, MinLength, IsOptional, IsDateString, IsEnum } from 'class-validator';
 import { TaskStatus } from '@prisma/client';
 
 // đăng ký enum để GraphQL hiểu
@@ -31,4 +31,11 @@ export class CreateTaskInput {
   @IsOptional()
   @IsEnum(TaskStatus)
   status?: TaskStatus;
+
+  // Cho phép truyền danh sách title tag khi tạo task
+  @Field(() => [String], { nullable: 'itemsAndList' })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  tags?: string[] | null;
 }

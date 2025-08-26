@@ -1,4 +1,5 @@
 import { Field, ObjectType, ID, GraphQLISODateTime } from '@nestjs/graphql';
+import { TagResponse } from './tagResponse.dto';
 
 // Bỏ aiId khỏi response nếu không cần hiển thị
 @ObjectType()
@@ -17,4 +18,7 @@ export class TaskResponse {
 
   @Field({ nullable: true })
   status?: string;
+
+  @Field(() => [TagResponse], { nullable: 'itemsAndList' })
+  tags?: TagResponse[] | null;
 }

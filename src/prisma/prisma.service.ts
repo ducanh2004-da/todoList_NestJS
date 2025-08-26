@@ -8,7 +8,7 @@ export class PrismaService extends PrismaClient {
         super({
             datasources: {
                 db:{
-                    url: 'postgresql://postgres:doducanh@localhost:5432/todoList?schema=public'
+                    url: 'postgresql://postgres:doducanh@localhost:5432/todoList2?schema=public'
                 }
             }
         })
