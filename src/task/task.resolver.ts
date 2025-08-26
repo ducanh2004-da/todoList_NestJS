@@ -20,4 +20,20 @@ export class TaskResolver {
     async addTask(@Args('data') data:CreateTaskInput){
         return this.taskService.add(data);
     }
+    @Mutation(() => TaskResponse)
+    async editTask(@Args('id', { type: () => Number }) id: number, @Args('data') data: CreateTaskInput) {
+        return this.taskService.edit(id, data);
+    }
+
+    @Mutation(() => TaskResponse)
+    async deleteTask(@Args('id', { type: () => Number }) id: number) {
+        return this.taskService.delete(id);
+    }
+    @Mutation(() => TaskPagination)
+    async search(@Args('title', { type: () => String }) title: string) {
+        const PageSize = 5;
+        const CurrentPage = 1;
+        const result = this.taskService.findByEmail(PageSize, CurrentPage, title);
+        return result;
+    }
 }

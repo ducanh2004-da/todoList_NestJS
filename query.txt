@@ -1,3 +1,19 @@
+
+
+query {
+  tasks {
+    totalTask
+    totalPage
+    items {
+      id
+    title
+    description
+    dueAt
+    status
+    }
+  }
+}
+
 mutation {
   addTask(data: {
     title: "làm bài tập",
@@ -13,8 +29,36 @@ mutation {
   }
 }
 
-query {
-  tasks {
+mutation {
+  editTask(
+    id: 3, 
+    data: {
+      title: "làm việc nhà",
+      description: "Làm vào lúc 5h",
+      dueAt: "2025-08-27T09:30:00.000Z",
+      status: TODO
+    }
+  ) {
+    id
+    title
+    description
+    dueAt
+    status
+  }
+}
+
+mutation {
+  deleteTask(id: 3) { 
+    id
+    title
+    description
+    dueAt
+    status
+  }
+}
+
+mutation {
+  search(title: "làm") {
     totalTask
     totalPage
     items {
@@ -26,3 +70,51 @@ query {
     }
   }
 }
+---------------- Tag----------------
+query {
+  tags {
+      id
+    title
+    description
+    taskId
+  }
+}
+
+mutation {
+  addTag(data: {
+    title: "học bài3",
+    description: "Học bài tập",
+    taskId: 2
+  }) {
+    id
+    title
+    description
+    taskId
+  }
+}
+
+mutation {
+  editTag(
+    id: 3, 
+    data: {
+      title: "học bài5",
+    description: "Học bài tập",
+    taskId: 2
+    }
+  ) {
+    id
+    title
+    description
+    taskId
+  }
+}
+
+mutation {
+  deleteTag(id: 3) { 
+    id
+    title
+    description
+    taskId
+  }
+}
+

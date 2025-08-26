@@ -16,7 +16,6 @@ export class CreateTagInput {
     description: string;
 
     @Field(() => Int, { nullable: true })
-    @IsOptional()
     @IsInt()
-    taskId?: number;
+    taskId: number;
 }
