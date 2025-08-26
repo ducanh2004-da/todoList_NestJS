@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { TagResponse } from '../models/tagResponse.dto';
 import { TagService } from './tag.service';
-import { CreateTagInput } from 'src/models';
+import { CreateTagInput } from '../models/createTag.dto';
 
 @Resolver(() => TagResponse)
 export class TagResolver {
