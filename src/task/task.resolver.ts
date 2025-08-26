@@ -31,7 +31,7 @@ export class TaskResolver {
     }
     @Mutation(() => TaskPagination)
     async search(@Args('title', { type: () => String }) title: string) {
-        const PageSize = 5;
+        const PageSize = 6;
         const CurrentPage = 1;
         const result = this.taskService.findByEmail(PageSize, CurrentPage, title);
         return result;
