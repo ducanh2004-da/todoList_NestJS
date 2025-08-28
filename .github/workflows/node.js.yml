@@ -25,7 +25,7 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        cache: 'yarn'
     - run: yarn --frozen-lockfile install && npx prisma generate && npx prisma migrate deploy
     - run: yarn build
     - run: yarn test:e2e
