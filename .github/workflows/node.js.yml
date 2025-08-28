@@ -1,6 +1,3 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
 name: Node.js CI
 
 on:
@@ -11,22 +8,64 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: testdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d testdb"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     strategy:
       matrix:
         node-version: [20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb?schema=public
+      NODE_ENV: test
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'yarn'
-    - run: yarn --frozen-lockfile install && npx prisma generate && npx prisma migrate deploy
-    - run: yarn build
-    - run: yarn test:e2e
-    - run: yarn start:prod
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - name: Install deps
+        run: yarn --frozen-lockfile install
+
+      - name: Wait for Postgres
+        run: |
+          for i in $(seq 1 30); do
+            pg_isready -h localhost -p 5432 -U postgres && break
+            echo "Waiting for Postgres..."
+            sleep 1
+          done
+
+      - name: Prisma generate
+        run: npx prisma generate
+
+      - name: Run migrations
+        run: npx prisma migrate deploy
+
+      - name: Build
+        run: yarn build
+
+      - name: Start app in background & wait for GraphQL
+        run: |
+          yarn start:prod &
+          npx wait-on http://localhost:3000/graphql
+
+      - name: Run e2e
+        run: yarn test:e2e
