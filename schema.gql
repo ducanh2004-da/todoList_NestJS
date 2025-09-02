@@ -29,9 +29,16 @@ type TaskPagination {
   items: [TaskResponse!]
 }
 
+type ReportResponse {
+  totalTask: Float!
+  totalInProgress: Float!
+  totalTag: Float!
+}
+
 type Query {
   tasks: TaskPagination!
   tags: [TagResponse!]!
+  report: ReportResponse!
 }
 
 type Mutation {
