@@ -1,5 +1,5 @@
 query {
-  tasks {
+  tasks(currentPage: 1) {
     totalTask
     totalPage
     items {

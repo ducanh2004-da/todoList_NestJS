@@ -36,7 +36,7 @@ type ReportResponse {
 }
 
 type Query {
-  tasks: TaskPagination!
+  tasks(currentPage: Float!): TaskPagination!
   tags: [TagResponse!]!
   report: ReportResponse!
 }

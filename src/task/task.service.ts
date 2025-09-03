@@ -85,7 +85,7 @@ export class TaskService {
             }
         })
         if (checkExist) {
-            throw new BadRequestException(`Task is not exists`);
+            throw new BadRequestException(`Task is exists`);
         }
         const addRC = await this.prisma.task.create({
             data: {

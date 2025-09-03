@@ -9,9 +9,8 @@ export class TaskResolver {
     constructor(private taskService: TaskService){}
 
     @Query(() => TaskPagination, {name: 'tasks'})
-    async findAllTask(){
+    async findAllTask(@Args('currentPage', { type: () => Number }) currentPage: number){
         const pageSize = 5;
-        const currentPage = 1;
         const result = this.taskService.findAll(pageSize, currentPage);
         return result;
     }
