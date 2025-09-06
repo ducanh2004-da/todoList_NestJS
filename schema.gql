@@ -35,6 +35,12 @@ type ReportResponse {
   totalTag: Float!
 }
 
+type AuthResponse {
+  success: Boolean!
+  message: String
+  token: String
+}
+
 type Query {
   tasks(currentPage: Float!): TaskPagination!
   tags: [TagResponse!]!
@@ -49,6 +55,9 @@ type Mutation {
   addTag(data: CreateTagInput!): TagResponse!
   editTag(id: Float!, data: CreateTagInput!): TagResponse!
   deleteTag(id: Float!): TagResponse!
+  signIn(data: LoginUserInput!): AuthResponse!
+  signUp(data: CreateUserInput!): AuthResponse!
+  googleLogin(data: GoogleLoginInput!): AuthResponse!
 }
 
 input CreateTaskInput {
@@ -70,4 +79,21 @@ input CreateTagInput {
   title: String!
   description: String
   taskId: Int
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+  firstName: String
+  lastName: String
+}
+
+input GoogleLoginInput {
+  email: String!
+  googleId: String!
 }

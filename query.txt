@@ -135,3 +135,42 @@ query {
     totalTag
   }
 }
+
+-------------------------------------------------------
+
+# Write your query or mutation here
+mutation {
+  signUp(data: {
+    email: "anhdott2@gmail.com",
+    password: "doducanh456",
+    firstName: "Do",
+    lastName: "Duc Anh2"
+  }) {
+    success
+    message
+    token
+  }
+}
+mutation {
+  signIn(data: {
+    email: "anhdott2@gmail.com",
+    password: "doducanh456",
+  }) {
+    success
+    message
+    token
+  }
+}
+
+mutation {
+  googleLogin(data: {
+    email: "anhdott3@gmail.com",
+    googleId: "112903255904302369946"
+  }) {
+    success
+    message
+    token
+  }
+}
+
+

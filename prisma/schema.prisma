@@ -28,6 +28,9 @@ model Task {
   updatedAt DateTime @updatedAt
   status TaskStatus @default(TODO)
 
+  userId Int?
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   tags Tag[]
   @@map("tasks")
   @@index([title])
@@ -44,5 +47,19 @@ model Tag {
 
   @@map("tags")
   @@index([title])
+}
+model User {
+  id Int @id @default(autoincrement())
+  email String @unique
+  password String?
+  firstName String?
+  lastName String?
+  googleId String? @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tasks Task[]
+  @@map("users")
+
 }
 
