@@ -9,15 +9,15 @@ export class TaskResolver {
     constructor(private taskService: TaskService){}
 
     @Query(() => TaskPagination, {name: 'tasks'})
-    async findAllTask(@Args('currentPage', { type: () => Number }) currentPage: number){
+    async findAllTask(@Args('userId', { type: () => Number }) userId: number, @Args('currentPage', { type: () => Number }) currentPage: number){
         const pageSize = 5;
-        const result = this.taskService.findAll(pageSize, currentPage);
+        const result = this.taskService.findAll(pageSize, currentPage,userId);
         return result;
     }
 
     @Mutation(() => TaskResponse)
-    async addTask(@Args('data') data:CreateTaskInput){
-        return this.taskService.add(data);
+    async addTask(@Args('userId', { type: () => Number }) userId: number, @Args('data') data:CreateTaskInput){
+        return this.taskService.add(data,userId);
     }
     @Mutation(() => TaskResponse)
     async editTask(@Args('id', { type: () => Number }) id: number, @Args('data') data: CreateTaskInput) {
@@ -29,10 +29,10 @@ export class TaskResolver {
         return this.taskService.delete(id);
     }
     @Mutation(() => TaskPagination)
-    async search(@Args('title', { type: () => String }) title: string) {
+    async search(@Args('userId', { type: () => Number }) userId: number, @Args('title', { type: () => String }) title: string) {
         const PageSize = 6;
         const CurrentPage = 1;
-        const result = this.taskService.findByEmail(PageSize, CurrentPage, title);
+        const result = this.taskService.findByEmail(PageSize, CurrentPage, title, userId);
         return result;
     }
 }

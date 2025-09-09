@@ -28,7 +28,7 @@ model Task {
   updatedAt DateTime @updatedAt
   status TaskStatus @default(TODO)
 
-  userId Int?
+  userId Int
   user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   tags Tag[]

@@ -1,4 +1,6 @@
+
 import { Field, ObjectType } from '@nestjs/graphql';
+import { UserResponse } from './userResponse.dto';
 
 @ObjectType()
 export class AuthResponse {
@@ -10,5 +12,8 @@ export class AuthResponse {
 
   @Field(() => String, { nullable: true }) // ✅ Fix lỗi: Chỉ rõ kiểu dữ liệu của token
   token?: string;
+
+  @Field(() => UserResponse, { nullable: true })
+  user?: UserResponse;
 }
 

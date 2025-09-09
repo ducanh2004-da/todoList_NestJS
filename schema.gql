@@ -35,29 +35,38 @@ type ReportResponse {
   totalTag: Float!
 }
 
+type UserResponse {
+  id: Int!
+  email: String!
+  firstName: String
+  lastName: String
+}
+
 type AuthResponse {
   success: Boolean!
   message: String
   token: String
+  user: UserResponse
 }
 
 type Query {
-  tasks(currentPage: Float!): TaskPagination!
+  tasks(userId: Float!, currentPage: Float!): TaskPagination!
   tags: [TagResponse!]!
   report: ReportResponse!
 }
 
 type Mutation {
-  addTask(data: CreateTaskInput!): TaskResponse!
+  addTask(userId: Float!, data: CreateTaskInput!): TaskResponse!
   editTask(id: Float!, data: CreateTaskInput!): TaskResponse!
   deleteTask(id: Float!): TaskResponse!
-  search(title: String!): TaskPagination!
+  search(userId: Float!, title: String!): TaskPagination!
   addTag(data: CreateTagInput!): TagResponse!
   editTag(id: Float!, data: CreateTagInput!): TagResponse!
   deleteTag(id: Float!): TagResponse!
   signIn(data: LoginUserInput!): AuthResponse!
   signUp(data: CreateUserInput!): AuthResponse!
-  googleLogin(data: GoogleLoginInput!): AuthResponse!
+  googleLogin(idToken: String!): AuthResponse!
+  logout: Boolean!
 }
 
 input CreateTaskInput {
@@ -91,9 +100,4 @@ input CreateUserInput {
   password: String!
   firstName: String
   lastName: String
-}
-
-input GoogleLoginInput {
-  email: String!
-  googleId: String!
 }

@@ -1,4 +1,4 @@
-import { Resolver ,Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver ,Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { AuthResponse } from 'src/models/authResponse.dto';
 import { CreateUserInput } from 'src/models/createUser.dto';
@@ -19,7 +19,11 @@ export class AuthResolver {
         return this.authService.signUp(data);
     }
     @Mutation(() => AuthResponse)
-    async googleLogin(@Args('data') data: GoogleLoginInput){
-        return this.authService.googleLogin(data);
+    async googleLogin(@Args('idToken') idToken: string){
+        return this.authService.googleLogin(idToken);
+    }
+    @Mutation(() => Boolean)
+    async logout(@Context() context){
+        this.authService.logout(context);
     }
 }

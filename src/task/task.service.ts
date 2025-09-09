@@ -6,10 +6,11 @@ import { CreateTaskInput } from '../models/createTask.dto';
 export class TaskService {
     constructor(private prisma: PrismaService) { }
 
-    async findAll(pageSize: number, currentPage: number) {
+    async findAll(pageSize: number, currentPage: number, userId: number) {
         const [totalTask, tasks] = await Promise.all([
             this.prisma.task.count(),
             this.prisma.task.findMany({
+                where: { userId },
                 skip: (currentPage - 1) * pageSize,
                 take: pageSize,
                 orderBy: { createdAt: 'desc' },
@@ -43,11 +44,14 @@ export class TaskService {
             items
         };
     }
-    async findByEmail(PageSize: number, CurrentPage: number, title: string) {
+    async findByEmail(PageSize: number, CurrentPage: number, title: string, userId: number) {
         const [totalTask, tasks] = await Promise.all([
             this.prisma.task.count({ where: title ? { title: { contains: title, mode: 'insensitive' } } : {}}),
             this.prisma.task.findMany({
-                where: title ? { title: { contains: title, mode: 'insensitive' } } : {},
+                where: {
+                    ...(title ? { title: { contains: title, mode: 'insensitive' } } : {}),
+                    userId
+                },
                 skip: (CurrentPage - 1) * PageSize,
                 take: PageSize,
                 orderBy: { createdAt: 'desc' },
@@ -78,7 +82,7 @@ export class TaskService {
             items
         };
     }
-    async add(dto: CreateTaskInput) {
+    async add(dto: CreateTaskInput, userId: number) {
         const checkExist = await this.prisma.task.findFirst({
             where: {
                 title: dto.title
@@ -93,6 +97,7 @@ export class TaskService {
                 description: dto.description,
                 dueAt: dto.dueAt,
                 status: dto.status,
+                userId: userId,
                 tags: dto.tags && dto.tags.length > 0
                     ? {
                         create: dto.tags.map(t => ({ title: t }))
