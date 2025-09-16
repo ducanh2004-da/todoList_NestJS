@@ -8,7 +8,9 @@ export class TaskService {
 
     async findAll(pageSize: number, currentPage: number, userId: number) {
         const [totalTask, tasks] = await Promise.all([
-            this.prisma.task.count(),
+            this.prisma.task.count({
+                where: { userId }
+            }),
             this.prisma.task.findMany({
                 where: { userId },
                 skip: (currentPage - 1) * pageSize,
@@ -16,16 +18,7 @@ export class TaskService {
                 orderBy: { createdAt: 'desc' },
                 include: {
                     // LẤY đủ fields tag để trả TagResponse object
-                    tags: {
-                        select: {
-                            id: true,
-                            title: true,
-                            description: true,
-                            taskId: true,
-                            createdAt: true,
-                            updatedAt: true
-                        }
-                    }
+                    tags: {}
                 }
             })
         ]);
@@ -46,7 +39,10 @@ export class TaskService {
     }
     async findByEmail(PageSize: number, CurrentPage: number, title: string, userId: number) {
         const [totalTask, tasks] = await Promise.all([
-            this.prisma.task.count({ where: title ? { title: { contains: title, mode: 'insensitive' } } : {}}),
+            this.prisma.task.count({ where: {
+                ...(title ? { title: { contains: title, mode: 'insensitive' } } : {}),
+                userId
+            }}),
             this.prisma.task.findMany({
                 where: {
                     ...(title ? { title: { contains: title, mode: 'insensitive' } } : {}),
@@ -83,13 +79,18 @@ export class TaskService {
         };
     }
     async add(dto: CreateTaskInput, userId: number) {
+        const result = {
+            message: '',
+            data: {}
+        }
         const checkExist = await this.prisma.task.findFirst({
             where: {
                 title: dto.title
             }
         })
         if (checkExist) {
-            throw new BadRequestException(`Task is exists`);
+            result.message = "Task is exists";
+            throw new BadRequestException(result.message);
         }
         const addRC = await this.prisma.task.create({
             data: {
@@ -104,18 +105,25 @@ export class TaskService {
                     }
                     : undefined
             },
-            include: { tags: true }  // <-- include tags so returned object has tags[]
+            include: { tags: true }  
         })
-        return addRC;
+        result.data = addRC;
+        result.message = "Add task successfully"
+        return result;
     }
     async edit(taskId: number, dto: CreateTaskInput) {
+        const result = {
+            message: '',
+            data: {}
+        }
         const getTask = await this.prisma.task.findFirst({
             where: {
                 id: taskId
             }
         });
         if (!getTask) {
-            throw new BadRequestException(`Task is not exists`);
+            result.message = "Task is not exists";
+            throw new BadRequestException(result.message);
         }
         const task = await this.prisma.task.update({
             where: {
@@ -130,22 +138,31 @@ export class TaskService {
                     : undefined
             }
         });
-        return task;
+        result.data = task;
+        result.message = "Edit task successfully";
+        return result;
     }
     async delete(taskId: number) {
+        const result = {
+            message: '',
+            data: {}
+        }
         const findTask = await this.prisma.task.findFirst({
             where: {
                 id: taskId
             }
         })
         if (!findTask) {
-            throw new BadRequestException(`Task is not exists`);
+            result.message = "Task is not exists";
+            throw new BadRequestException(result.message);
         }
-        const result = await this.prisma.task.delete({
+        const deleteRC = await this.prisma.task.delete({
             where: {
                 id: taskId
             }
         })
+        result.data = deleteRC;
+        result.message = "Delete task successfully";
         return result;
     }
 }

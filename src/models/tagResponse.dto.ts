@@ -15,4 +15,11 @@ export class TagResponse {
 
     @Field(() => Number, { nullable: true })
     taskId?: number;
+
+    @Field(() => Date, {nullable: true})
+    createdAt?: Date;
+
+    @Field(() => Date, {nullable: true})
+    updatedAt?: Date;
+
 }

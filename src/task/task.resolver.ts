@@ -2,6 +2,7 @@ import { TaskResponse } from '../models/taskResponse.dto';
 import { TaskPagination } from '../models/taskPagination.dto';
 import { CreateTaskInput } from '../models/createTask.dto';
 import { TaskService } from './task.service';
+import { ReturnResult } from '../models/returnResult.dto';
 import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 
 @Resolver(() => TaskResponse)
@@ -15,16 +16,16 @@ export class TaskResolver {
         return result;
     }
 
-    @Mutation(() => TaskResponse)
+    @Mutation(() => ReturnResult)
     async addTask(@Args('userId', { type: () => Number }) userId: number, @Args('data') data:CreateTaskInput){
         return this.taskService.add(data,userId);
     }
-    @Mutation(() => TaskResponse)
+    @Mutation(() => ReturnResult)
     async editTask(@Args('id', { type: () => Number }) id: number, @Args('data') data: CreateTaskInput) {
         return this.taskService.edit(id, data);
     }
 
-    @Mutation(() => TaskResponse)
+    @Mutation(() => ReturnResult)
     async deleteTask(@Args('id', { type: () => Number }) id: number) {
         return this.taskService.delete(id);
     }

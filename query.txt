@@ -1,5 +1,5 @@
 query {
-  tasks(currentPage: 1) {
+  tasks(currentPage: 1, userId: 1) {
     totalTask
     totalPage
     items {
@@ -19,50 +19,66 @@ query {
 
 
 mutation {
-  addTask(data: {
-    title: "làm bài tập3",
+  addTask(userId: 1, data: {
+    title: "làm bài tập8",
     dueAt: "2025-09-02T09:30:00.000Z",
     description: "Theo dõi đơn hàng #123",
     status: IN_PROGRESS,
     tags: ["học bài"]
   }) {
-    id
-    title
-    description
-    dueAt
-    status
-    tags {
-      title
+    message
+    data {
+      id
+    	title
+    	description
+    	dueAt
+    	status
+    	tags {
+      	title
+    	}
     }
+    
   }
 }
 
 
 mutation {
   editTask(
-    id: 3, 
+    id: 13, 
     data: {
-      title: "làm việc nhà",
+      title: "làm việc nhà3",
       description: "Làm vào lúc 5h",
       dueAt: "2025-08-27T09:30:00.000Z",
       status: TODO
     }
   ) {
-    id
-    title
-    description
-    dueAt
-    status
+     message
+    data {
+      id
+    	title
+    	description
+    	dueAt
+    	status
+    	tags {
+      	title
+    	}
+    }
   }
 }
 
 mutation {
-  deleteTask(id: 3) { 
-    id
-    title
-    description
-    dueAt
-    status
+  deleteTask(id: 13) { 
+    message
+    data {
+      id
+    	title
+    	description
+    	dueAt
+    	status
+    	tags {
+      	title
+    	}
+    }
   }
 }
 
