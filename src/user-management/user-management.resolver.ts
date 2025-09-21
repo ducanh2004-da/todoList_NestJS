@@ -20,7 +20,7 @@ export class UserManagementResolver {
         @Context() ctx: any
     ){
         if(!ctx.req.user){
-            throw new ForbiddenException('Not authentication, Sign In plz!');
+            throw new ForbiddenException('Not authentication');
         }
         const pageSize = 5;
         return this.userService.findAll(pageSize, currentPage);
