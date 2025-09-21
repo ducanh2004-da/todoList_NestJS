@@ -36,17 +36,12 @@ type ReturnResult {
   data: TaskResponse
 }
 
-type ReportResponse {
-  totalTask: Float!
-  totalInProgress: Float!
-  totalTag: Float!
-}
-
 type UserResponse {
   id: Int!
   email: String!
   firstName: String
   lastName: String
+  role: String
 }
 
 type AuthResponse {
@@ -56,10 +51,24 @@ type AuthResponse {
   user: UserResponse
 }
 
+type ReportResponse {
+  totalTask: Float!
+  totalInProgress: Float!
+  totalTag: Float!
+}
+
+type UserPagination {
+  totalTask: Int
+  totalPage: Int
+  items: [UserResponse!]
+}
+
 type Query {
   tasks(userId: Float!, currentPage: Float!): TaskPagination!
   tags: [TagResponse!]!
   report: ReportResponse!
+  users(currentPage: Float!): UserPagination!
+  userId(userId: Float!): UserResponse!
 }
 
 type Mutation {
@@ -67,13 +76,14 @@ type Mutation {
   editTask(id: Float!, data: CreateTaskInput!): ReturnResult!
   deleteTask(id: Float!): ReturnResult!
   search(userId: Float!, title: String!): TaskPagination!
-  addTag(data: CreateTagInput!): TagResponse!
-  editTag(id: Float!, data: CreateTagInput!): TagResponse!
-  deleteTag(id: Float!): TagResponse!
   signIn(data: LoginUserInput!): AuthResponse!
   signUp(data: CreateUserInput!): AuthResponse!
   googleLogin(idToken: String!): AuthResponse!
   logout: Boolean!
+  addTag(data: CreateTagInput!): TagResponse!
+  editTag(id: Float!, data: CreateTagInput!): TagResponse!
+  deleteTag(id: Float!): TagResponse!
+  deleteUser(userId: Float!): ReturnResult!
 }
 
 input CreateTaskInput {
@@ -91,12 +101,6 @@ enum TaskStatus {
   DONE
 }
 
-input CreateTagInput {
-  title: String!
-  description: String
-  taskId: Int
-}
-
 input LoginUserInput {
   email: String!
   password: String!
@@ -107,4 +111,10 @@ input CreateUserInput {
   password: String!
   firstName: String
   lastName: String
+}
+
+input CreateTagInput {
+  title: String!
+  description: String
+  taskId: Int
 }

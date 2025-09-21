@@ -35,7 +35,7 @@ export class AuthService {
         if (!checkPwt) {
             throw new BadRequestException(`Password is incorrect`);
         }
-        const token = await this.signToken(user.id, user.email);
+        const token = await this.signToken(user.id, user.email, user.role);
         return {
             success: true,
             message: 'User logged in successfully',
@@ -44,7 +44,8 @@ export class AuthService {
                 id: user.id,
                 email: user.email,
                 firstName: user.firstName,
-                lastName: user.lastName
+                lastName: user.lastName,
+                role: user.role
             }
         }
     }
@@ -63,10 +64,10 @@ export class AuthService {
                 email: data.email,
                 password: hash,
                 firstName: data.firstName,
-                lastName: data.lastName
+                lastName: data.lastName,
             }
         });
-        const token = await this.signToken(newUser.id, newUser.email);
+        const token = await this.signToken(newUser.id, newUser.email, newUser.role);
         return {
             success: true,
             message: 'User created successfully',
@@ -75,14 +76,16 @@ export class AuthService {
                 id: newUser.id,
                 email: newUser.email,
                 firstName: newUser.firstName,
-                lastName: newUser.lastName
+                lastName: newUser.lastName,
+                role: newUser.role
             }
         }
     }
-    async signToken(userId: number, email: string) {
+    async signToken(userId: number, email: string, role: string) {
         const payload = {
             sub: userId,
-            email
+            email,
+            role
         }
         const secret = this.config.get('JWT_SECRET');
         const token = await this.jwt.signAsync(payload);
@@ -130,7 +133,7 @@ export class AuthService {
                 data: {googleId: data.googleId}
              })
         }
-        const token = await this.signToken(user.id, user.email);
+        const token = await this.signToken(user.id, user.email, user.role);
         return {
             success: true,
             message: 'User logged in successfully',
@@ -139,7 +142,8 @@ export class AuthService {
                 id: user.id,
                 email: user.email,
                 firstName: user.firstName,
-                lastName: user.lastName
+                lastName: user.lastName,
+                role: user.role
             }
         }
     }
@@ -151,3 +155,4 @@ export class AuthService {
         return true;
     }
 }
+

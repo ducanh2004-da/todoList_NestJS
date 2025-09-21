@@ -39,10 +39,12 @@ export class TaskService {
     }
     async findByEmail(PageSize: number, CurrentPage: number, title: string, userId: number) {
         const [totalTask, tasks] = await Promise.all([
-            this.prisma.task.count({ where: {
-                ...(title ? { title: { contains: title, mode: 'insensitive' } } : {}),
-                userId
-            }}),
+            this.prisma.task.count({
+                where: {
+                    ...(title ? { title: { contains: title, mode: 'insensitive' } } : {}),
+                    userId
+                }
+            }),
             this.prisma.task.findMany({
                 where: {
                     ...(title ? { title: { contains: title, mode: 'insensitive' } } : {}),
@@ -101,11 +103,13 @@ export class TaskService {
                 userId: userId,
                 tags: dto.tags && dto.tags.length > 0
                     ? {
-                        create: dto.tags.map(t => ({ title: t }))
+                        create: dto.tags.map(t => ({
+                            title: t
+                        }))
                     }
                     : undefined
             },
-            include: { tags: true }  
+            include: { tags: true }
         })
         result.data = addRC;
         result.message = "Add task successfully"

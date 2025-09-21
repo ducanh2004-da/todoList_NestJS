@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { AuthResponse } from 'src/models/authResponse.dto';
 import { CreateUserInput } from 'src/models/createUser.dto';
 import { LoginUserInput } from 'src/models/loginUser.dto';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, UseGuards } from '@nestjs/common';
 import { GoogleLoginInput } from './../models/googleLogin.dto';
 
 @Resolver(() => AuthResponse)

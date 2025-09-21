@@ -7,6 +7,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule } from '@nestjs/config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AuthModule } from './auth/auth.module';
+import { UserManagementModule } from './user-management/user-management.module';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
 @Module({
   imports: [
@@ -18,17 +20,19 @@ import { AuthModule } from './auth/auth.module';
       autoSchemaFile: 'schema.gql',
       debug: true, // Bật debug mode
       introspection: true,
-      playground: true,
+      playground: false,
       csrfPrevention: false, // Tắt CSRF protection
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
       subscriptions: {
         'graphql-ws': true,
         'subscriptions-transport-ws': true,
       },
     }),
-    TaskModule, 
-    TagModule, 
-    ReportModule, 
-    PrismaModule, AuthModule
+    TaskModule,
+    TagModule,
+    ReportModule,
+    PrismaModule, AuthModule,
+    UserManagementModule
   ]
 })
-export class AppModule {}
+export class AppModule { }
