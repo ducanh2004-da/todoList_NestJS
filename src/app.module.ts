@@ -18,7 +18,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver, // Thêm driver vào đây
       autoSchemaFile: 'schema.gql',
-      debug: true, // Bật debug mode
+      debug: true, 
       introspection: true,
       playground: false,
       csrfPrevention: false, // Tắt CSRF protection
