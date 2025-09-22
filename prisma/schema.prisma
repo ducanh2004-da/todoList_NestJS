@@ -29,8 +29,8 @@ model Tag {
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  taskId      Int
-  task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId      Int?
+  task        Task?     @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
   @@index([title])
   @@map("tags")

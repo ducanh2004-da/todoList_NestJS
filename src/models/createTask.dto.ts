@@ -25,7 +25,7 @@ export class CreateTaskInput {
   @IsOptional()
   @IsString()
   @MinLength(3)
-  description: string;
+  description?: string;
 
   @Field(() => TaskStatus, { nullable: true })
   @IsOptional()

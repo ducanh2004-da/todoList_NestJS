@@ -13,9 +13,5 @@ export class CreateTagInput {
     @IsOptional()
     @IsString()
     @MinLength(3)
-    description: string;
-
-    @Field(() => Int, { nullable: true })
-    @IsInt()
-    taskId: number;
+    description?: string;
 }

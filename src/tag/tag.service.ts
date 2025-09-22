@@ -26,7 +26,6 @@ export class TagService {
                 data: {
                     title: dto.title,
                     description: dto.description,
-                    taskId: dto.taskId
                 }
             })
             return addRC;
